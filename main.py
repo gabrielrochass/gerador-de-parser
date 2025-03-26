@@ -77,24 +77,49 @@ class ArithmeticVisitor:
 
 def main():
     visitor = ArithmeticVisitor()
-    print("REPL de Aritmética. Digite 'exit' para sair.")
-    
-    while True:
-        try:
-            expression = input(">>> ")
-            if expression.strip().lower() == 'exit':
-                print("Saindo do REPL...")
-                break
 
-            lexer = ArithmeticLexer(InputStream(expression))
-            stream = CommonTokenStream(lexer)
-            parser = ArithmeticParser(stream)
-            tree = parser.program()
-            result = visitor.visit(tree)
-            if result is not None:
-                print("Resultado:", result)
+    if len(sys.argv) > 1:
+        # Modo de execução com arquivo
+        file_path = sys.argv[1]
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                expressions = f.readlines()
+            
+            for expression in expressions:
+                expression = expression.strip()
+                if expression:
+                    lexer = ArithmeticLexer(InputStream(expression))
+                    stream = CommonTokenStream(lexer)
+                    parser = ArithmeticParser(stream)
+                    tree = parser.program()
+                    result = visitor.visit(tree)
+                    if result is not None:
+                        print("Resultado:", result)
+
+        except FileNotFoundError:
+            print(f"Erro: Arquivo '{file_path}' não encontrado.")
         except Exception as e:
-            print(f"Erro: {e}")
+            print(f"Erro ao processar o arquivo: {e}")
+    else:
+        # Modo interativo (REPL)
+        print("REPL de Aritmética. Digite 'exit' para sair.")
+        while True:
+            try:
+                expression = input(">>> ")
+                if expression.strip().lower() == 'exit':
+                    print("Saindo do REPL...")
+                    break
+
+                lexer = ArithmeticLexer(InputStream(expression))
+                stream = CommonTokenStream(lexer)
+                parser = ArithmeticParser(stream)
+                tree = parser.program()
+                result = visitor.visit(tree)
+                if result is not None:
+                    print("Resultado:", result)
+            except Exception as e:
+                print(f"Erro: {e}")
 
 if __name__ == '__main__':
     main()
+
