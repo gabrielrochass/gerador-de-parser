@@ -5,10 +5,13 @@ DIV=4
 INT=5
 LPAREN=6
 RPAREN=7
-WS=8
+VAR=8
+ASSIGN=9
+WS=10
 '+'=1
 '-'=2
 '*'=3
 '/'=4
 '('=6
 ')'=7
+'='=9
