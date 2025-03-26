@@ -1,6 +1,6 @@
 grammar Arithmetic;
 
-// Regras do Lexer
+// Lexer
 PLUS    : '+' ;
 MINUS   : '-' ;
 MUL     : '*' ;
@@ -12,10 +12,28 @@ VAR     : [a-zA-Z]+ ;
 ASSIGN  : '=' ;
 WS      : [ \t\r\n]+ -> skip ;
 
-// Regras do Parser
+// Parser
 program     : statement+ ;
-statement   : assignment | expr ;
-assignment  : VAR ASSIGN expr ;
-expr        : term ( (PLUS | MINUS) term )* ;
-term        : factor ( (MUL | DIV) factor )* ;
-factor      : INT | VAR | LPAREN expr RPAREN ;
+
+statement
+    : assignment
+    | expr
+    ;
+
+assignment
+    : VAR ASSIGN expr
+    ;
+
+expr
+    : term ( (PLUS | MINUS) term )*
+    ;
+
+term
+    : factor ( (MUL | DIV) factor )*
+    ;
+
+factor
+    : INT
+    | VAR
+    | LPAREN expr RPAREN
+    ;
