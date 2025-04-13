@@ -15,8 +15,13 @@ class BasicVisitor:
 
     def visit_input(self, statement):
         var_name = statement['name']
-        user_input = input()
-        self.variables[var_name] = int(user_input)
+        while True:
+            user_input = input()
+            try:
+                self.variables[var_name] = int(user_input)
+                break
+            except ValueError:
+                print("Por favor, digite um número válido.")
 
     def visit_if(self, statement):
         condition = self.evaluate_expression(statement['condition'])
@@ -56,7 +61,7 @@ class BasicVisitor:
 # Example of how the program could be represented as a dictionary
 program = {
     'statements': [
-        {'type': 'PRINT', 'value': 'Type a number'},
+        {'type': 'PRINT', 'value': 'Digite um número:'},
         {'type': 'DECL', 'name': 'num'},
         {'type': 'INPUT', 'name': 'num'},
         {'type': 'IF', 'condition': {'left': 'num', 'op': '>', 'right': 100}, 'statements': [
